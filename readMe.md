@@ -4,7 +4,7 @@ You can copy-paste this directly into your `README.md`.
 
 ---
 
-````markdown
+````
 # 🔐 RFID Based Door Lock System using Arduino
 
 A smart access control system built using **Arduino UNO**, **MFRC522 RFID Module**, **Servo Motor**, LEDs, and a Buzzer.  
@@ -107,87 +107,9 @@ If an invalid card is scanned:
    - Double beep
    - Access denied
 
----
 
-## 💻 Arduino Code
 
-```cpp
-#include <SPI.h>
-#include <MFRC522.h>
-#include <Servo.h>
-
-#define SS_PIN 10
-#define RST_PIN 9
-#define SERVO_PIN 3
-#define LED_G 5
-#define LED_R 4
-#define BUZZER 2
-
-MFRC522 mfrc522(SS_PIN, RST_PIN);
-Servo myServo;
-
-String authorizedUID = "C3 3D 0B 05";
-
-void setup() {
-  Serial.begin(9600);
-  SPI.begin();
-  mfrc522.PCD_Init();
-
-  pinMode(LED_G, OUTPUT);
-  pinMode(LED_R, OUTPUT);
-  pinMode(BUZZER, OUTPUT);
-
-  myServo.attach(SERVO_PIN);
-  myServo.write(0);
-
-  Serial.println("Scan RFID card...");
-}
-
-void loop() {
-
-  if (!mfrc522.PICC_IsNewCardPresent()) return;
-  if (!mfrc522.PICC_ReadCardSerial()) return;
-
-  String content = "";
-
-  for (byte i = 0; i < mfrc522.uid.size; i++) {
-    content.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
-    content.concat(String(mfrc522.uid.uidByte[i], HEX));
-  }
-
-  content.toUpperCase();
-
-  if (content.substring(1) == authorizedUID) {
-
-    digitalWrite(LED_G, HIGH);
-    tone(BUZZER, 1200);
-    delay(150);
-    noTone(BUZZER);
-
-    myServo.write(180);
-    delay(5000);
-    myServo.write(0);
-
-    digitalWrite(LED_G, LOW);
-  }
-  else {
-
-    digitalWrite(LED_R, HIGH);
-
-    for (int i = 0; i < 2; i++) {
-      tone(BUZZER, 600);
-      delay(150);
-      noTone(BUZZER);
-      delay(100);
-    }
-
-    digitalWrite(LED_R, LOW);
-  }
-}
 ````
-
----
-
 ## 🚀 Features
 
 * RFID based authentication
@@ -222,16 +144,6 @@ void loop() {
 
 ---
 
-## 📷 Project Demo
-
-(Add your project images here)
-
-```
-![Project Image](image.jpg)
-```
-
----
-
 ## 📜 License
 
 This project is open-source and available for learning and educational purposes.
@@ -243,17 +155,4 @@ This project is open-source and available for learning and educational purposes.
 Developed by **Om**
 Arduino + Embedded Systems Enthusiast 🚀
 
-```
-
----
-
-If you want, I can now:
-
-- Make a **professional GitHub repo structure**
-- Write a **LinkedIn project description**
-- Create a **resume-ready project explanation**
-- Generate a **project report PDF format**
-- Create a **PPT presentation content**
-
-Tell me what you need next 🔥
 ```
